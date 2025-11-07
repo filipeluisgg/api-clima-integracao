@@ -7,3 +7,24 @@ spring:
     username: "admin"
     password: "admin-api"
 
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+openweather:
+  api:
+    key: ${OPENWEATHER_API_KEY}
+    url: https://api.openweathermap.org/data/2.5
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
