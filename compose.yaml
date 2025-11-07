@@ -1,0 +1,17 @@
+services:
+  database:
+    image: "postgres:16.0-alpine3.18"
+    container_name: "clima_api_db"
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_USER=admin"
+      - "POSTGRES_DB=clima_db"
+      - "POSTGRES_PASSWORD=admin-api"
+    volumes:
+      - "postgres_clima_data:/var/lib/postgresql/data"
+
+volumes:
+  postgres_clima_data:
+    driver: local
+

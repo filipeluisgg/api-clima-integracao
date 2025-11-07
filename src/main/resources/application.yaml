@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: "clima-api"
+
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/clima_db"
+    username: "admin"
+    password: "admin-api"
+
