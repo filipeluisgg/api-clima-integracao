@@ -14,7 +14,7 @@
 
 * [Estrutura de Diretórios](#estrutura-de-diretórios)
 * [Tecnologias Utilizadas](#-tecnologias-utilizadas)
-* [Como Executar o Projeto](#como-executar-o-projeto)
+* [Executando a API em Docker](#executar-a-api-em-docker)
 * [Uso da API](#-uso-da-api)
 * [Testes](#-testes)
 
@@ -52,10 +52,7 @@ dev.felipe.climaapi/
 
 ---
 
-
-## Como Executar o Projeto
-
-Siga estes passos para configurar e executar a aplicação localmente.
+## Executar a API em Docker
 
 ### 1. Pré-requisitos
 
@@ -66,57 +63,43 @@ Siga estes passos para configurar e executar a aplicação localmente.
 <br/>
 
 ### 2. Clonar o Repositório
-
+Use o `PowerShell` se estiver no Windows. Os comandos a seguir devem ser todos executados com permissões de administrador.
 ```
  git clone https://github.com/filipeluisgg/api-clima-integracao.git
- cd clima-api
+ cd api-clima-integracao
 ```
+
 <br/>
 
 ### 3. Configuração da API Key
 
-Para que a aplicação possa se conectar à OpenWeather, você precisa de uma chave de API.
+Para fazer o build do código Java e rodar a aplicação será necessário que você gratuitamente crie uma conta no [OpenWeatherMap](https://openweathermap.org/appid) e gere uma chave de API.
+O seguinte comando é para definir a variável de ambiente com a chave de API, caso contrário a aplicação não funcionará corretamente. No comando, troque o valor "sua-chave-api-aqui" para o real valor da chave de API que gerou.
 
-1.  Gratuitamente crie uma conta no [OpenWeatherMap](https://openweathermap.org/appid) e gere uma chave de API.
-2.  Crie uma **variável de ambiente** no seu sistema chamada `OPENWEATHER_API_KEY` e atribua a ela o valor da sua chave.
+Se estiver no Windows, execute no powershell:
 
-*   **Exemplo (Linux/macOS):**
-    ```bash
-    export OPENWEATHER_API_KEY="sua_chave_aqui"
-    ```
-*   **Exemplo (Windows PowerShell):**
-    ```shell
-    $env:OPENWEATHER_API_KEY="sua_chave_aqui"
-    ```
+```shell
+  $env:OPENWEATHER_API_KEY="sua-chave-api-aqui"
+```
 
-A aplicação está configurada para ler esta variável.
+Se estiver no Linux ou MacOS, execute estes dois comandos:
+
+```bash
+  chmod +x mvnw
+  export OPENWEATHER_API_KEY="sua-chave-api-aqui"
+```
 
 <br/>
 
-### 4. Subir o Banco de Dados
+### 4. Build do Projeto
 
-O projeto usa Docker Compose para gerenciar o contêiner do PostgreSQL, na raiz do projeto, execute:
-```bash
-  docker compose up -d
+O comando abaixo deve ser executado no mesmo terminal que foi definido a variável de ambiente no passo anterior. Este comando constrói a imagem Docker da API (compilando o código Java) e inicia o ambiente completo (API + PostgreSQL). Com isso, o serviço estará em contêiner e apto para ser executado em qualquer máquina.
+
 ```
-Este comando irá baixar a imagem do Postgres e iniciar o banco de dados em segundo plano.
-
-<br/>
-
-### 5. Executar a Aplicação
-
-Com o banco de dados rodando, inicie a aplicação Java. Se a variável de ambiente 'OPENWEATHER_API_KEY' não foi definida anterior mente no passo 3, a aplicação irá falhar ao tentar iniciar. Use o comando Maven Wrapper abaixo para iniciar a API:
-
-```bash
-  # Em Linux/macOS
-  ./mvnw spring-boot:run
-
-  # Em Windows (CMD ou PowerShell)
-  .\mvnw.cmd spring-boot:run
+  docker compose up --build -d
 ```
 
-
-A API e sua documentação estarão disponíveis em `http://localhost:8080/swagger-ui.html`.
+Após o término da execução, a API e sua documentação estarão disponíveis em `http://localhost:8080/swagger-ui.html`.
 
 ---
 
@@ -125,6 +108,7 @@ A API e sua documentação estarão disponíveis em `http://localhost:8080/swagg
 A melhor forma de explorar a API é através da documentação interativa do Swagger.
 
 *   **URL da Documentação:** [**http://localhost:8080/swagger-ui.html**](http://localhost:8080/swagger-ui.html)
+*   **Obs**: Para **consultar coordenadas**, recomendo o site https://www.mapcoordinates.net/pt
 
 ### Endpoints disponíveis
 
@@ -138,14 +122,16 @@ A melhor forma de explorar a API é através da documentação interativa do Swa
 
 ## ✅ Testes
 
-O projeto possui uma suíte de testes automatizados para as camadas de Controller, Service e Repository.
+O projeto possui suítes de testes automatizados para as camadas de Controller, Service e Repository.
+Para executar os testes, execute os comandos abaixo como administrador e pelo mesmo terminal que usou para subir a API em Docker:
 
-Para executar todos os testes, utilize o comando:
-
-```bash
-  # Em Linux/macOS
-  ./mvnw test
-
-  # Em Windows (CMD ou PowerShell)
+Para Windows (CMD ou PowerShell):
+```shell
   .\mvnw.cmd test
+```
+
+Para Linux/macOS, execute estes dois comandos:
+```bash
+  chmod +x mvnw
+  ./mvnw test
 ```

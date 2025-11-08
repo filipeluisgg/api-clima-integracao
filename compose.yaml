@@ -2,6 +2,11 @@ services:
   database:
     image: "postgres:16.0-alpine3.18"
     container_name: "clima_api_db"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin -d clima_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     ports:
       - "5432:5432"
     environment:
@@ -10,6 +15,20 @@ services:
       - "POSTGRES_PASSWORD=admin-api"
     volumes:
       - "postgres_clima_data:/var/lib/postgresql/data"
+
+  api:
+    container_name: "clima_api"
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/clima_db
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin-api
 
 volumes:
   postgres_clima_data:
