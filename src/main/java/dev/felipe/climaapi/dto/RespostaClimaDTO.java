@@ -6,7 +6,7 @@ import java.util.List;
 public record RespostaClimaDTO
 (
         @JsonProperty("name")
-        String nomeCidade,
+        String nomeLocal,
 
         @JsonProperty("coord")
         CoordenadaDTO coordenada,

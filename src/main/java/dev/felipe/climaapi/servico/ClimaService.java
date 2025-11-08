@@ -9,7 +9,9 @@ import dev.felipe.climaapi.mapper.ClimaMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -43,9 +45,20 @@ public class ClimaService
                 longitude,
                 apiKey
         );
-        DadosClimaticos dadosClimaticos = climaMapper.mapearParaEntidade(respostaClimaDTO);
 
-        return dadosClimaticosRepositorio.save(dadosClimaticos);
+        String local = respostaClimaDTO.nomeLocal();
+        LocalDate hoje = LocalDate.now();
+
+        Optional<DadosClimaticos> existenteOpt = dadosClimaticosRepositorio.findByLocalIgnoreCaseAndDia(local, hoje);
+
+        if (existenteOpt.isPresent()) {
+            DadosClimaticos entidadeExistente = existenteOpt.get();
+            climaMapper.atualizarDados(entidadeExistente, respostaClimaDTO);
+            return dadosClimaticosRepositorio.save(entidadeExistente);
+        } else {
+            DadosClimaticos novaEntidade = climaMapper.mapearParaEntidade(respostaClimaDTO, hoje);
+            return dadosClimaticosRepositorio.save(novaEntidade);
+        }
     }
 
 
