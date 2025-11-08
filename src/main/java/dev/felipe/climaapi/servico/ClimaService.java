@@ -2,6 +2,8 @@ package dev.felipe.climaapi.servico;
 
 import dev.felipe.climaapi.dto.RespostaClimaDTO;
 import dev.felipe.climaapi.entidade.DadosClimaticos;
+import dev.felipe.climaapi.excecao.ConfiguracaoInvalidaException;
+import dev.felipe.climaapi.excecao.LocalNaoEncontradoException;
 import dev.felipe.climaapi.integracao.ClienteOpenWeather;
 import dev.felipe.climaapi.repositorio.DadosClimaticosRepositorio;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,7 +57,8 @@ public class ClimaService
             DadosClimaticos entidadeExistente = existenteOpt.get();
             climaMapper.atualizarDados(entidadeExistente, respostaClimaDTO);
             return dadosClimaticosRepositorio.save(entidadeExistente);
-        } else {
+        }
+        else {
             DadosClimaticos novaEntidade = climaMapper.mapearParaEntidade(respostaClimaDTO, hoje);
             return dadosClimaticosRepositorio.save(novaEntidade);
         }
@@ -67,6 +70,12 @@ public class ClimaService
      * @return Uma lista de registros históricos do banco.
      */
     public List<DadosClimaticos> consultarClimaPorLocal(String nomeLocal) {
-        return dadosClimaticosRepositorio.findByLocalIgnoreCase(nomeLocal);
+        List<DadosClimaticos> dadosClimaticos = dadosClimaticosRepositorio.findByLocalIgnoreCase(nomeLocal);
+
+        if (dadosClimaticos.isEmpty()) {
+            throw new LocalNaoEncontradoException(nomeLocal);
+        }
+
+        return dadosClimaticos;
     }
 }
