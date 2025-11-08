@@ -38,4 +38,12 @@ public interface ClimaApiDocs
             @Parameter(description = "Nome do local (bairro/cidade, ex: 'Trindade')", required = true)
             @RequestParam String nomeLocal
     );
+
+
+    @Operation(
+            summary = "Lista todos os registros",
+            description = "Retorna todos os registros de dados climáticos que foram salvos no banco de dados."
+    )
+    @GetMapping("/todos")
+    ResponseEntity<List<DadosClimaticos>> listarTodosOsRegistros();
 }
