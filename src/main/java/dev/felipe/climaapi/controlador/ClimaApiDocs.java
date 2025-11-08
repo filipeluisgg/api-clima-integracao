@@ -17,14 +17,14 @@ public interface ClimaApiDocs
 {
     @Operation(
             summary = "Busca dados na API externa e salva no banco",
-            description = "Demonstra a extração de dados da API OpenWeather e o salvamento no banco de dados local."
+            description = "Demonstra a extração de dados da OpenWeather. Cria um novo registro se for o primeiro do dia para o local, ou atualiza o registro existente caso contrário."
     )
     @PostMapping("/buscar")
     ResponseEntity<DadosClimaticos> buscarEArmazenar(
-            @Parameter(description = "Latitude (ex: -23.5505)", required = true)
+            @Parameter(description = "Latitude (ex: -27.5895)", required = true)
             @RequestParam BigDecimal latitude,
 
-            @Parameter(description = "Longitude (ex: -46.6818)", required = true)
+            @Parameter(description = "Longitude (ex: -48.5216)", required = true)
             @RequestParam BigDecimal longitude
     );
 

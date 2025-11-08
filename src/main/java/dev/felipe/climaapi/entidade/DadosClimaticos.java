@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 @Data
@@ -17,6 +18,9 @@ public class DadosClimaticos
     private Long id;
 
     private String local;
+
+    @Column(name = "dia", nullable = false)
+    private LocalDate dia;
 
     private BigDecimal longitude;
 
@@ -39,8 +43,7 @@ public class DadosClimaticos
 
     private Integer umidade;
 
-    @CreationTimestamp
-    @Column(name = "data_consulta", nullable = false, updatable = false)
+    @Column(name = "data_consulta", nullable = false)
     private OffsetDateTime dataConsulta;
 }
 

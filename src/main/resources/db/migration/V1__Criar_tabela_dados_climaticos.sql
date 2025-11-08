@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS dados_climaticos
 (
     id BIGSERIAL PRIMARY KEY,
     local VARCHAR(100) NOT NULL,
+    dia DATE NOT NULL,
     longitude DECIMAL(11, 7) NOT NULL,
     latitude DECIMAL(11, 7) NOT NULL,
     condicao_clima VARCHAR(100),
@@ -14,4 +15,4 @@ CREATE TABLE IF NOT EXISTS dados_climaticos
 );
 
 -- Adiciona um index na coluna 'local' para melhor desempenho na busca de dados
-CREATE INDEX IF NOT EXISTS idx_local ON dados_climaticos(local);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_local_dia_unico ON dados_climaticos (local, dia);
