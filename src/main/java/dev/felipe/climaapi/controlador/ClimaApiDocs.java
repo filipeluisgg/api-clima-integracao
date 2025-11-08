@@ -17,9 +17,9 @@ public interface ClimaApiDocs
 {
     @Operation(
             summary = "Busca dados na API externa e salva no banco",
-            description = "Demonstra a extração de dados da OpenWeather. Cria um novo registro se for o primeiro do dia para o local, ou atualiza o registro existente caso contrário."
+            description = "Demonstra a extração de dados da API OpenWeather. Cria um novo registro se for o primeiro do dia para o local pesquisado, se não for, atualiza o registro existente."
     )
-    @PostMapping("/buscar")
+    @PostMapping
     ResponseEntity<DadosClimaticos> buscarEArmazenar(
             @Parameter(description = "Latitude (ex: -27.5895)", required = true)
             @RequestParam BigDecimal latitude,
@@ -30,12 +30,12 @@ public interface ClimaApiDocs
 
 
     @Operation(
-            summary = "Consulta dados salvos no banco por local",
-            description = "Consulta o banco de dados local e retorna o histórico de todos os registros salvos para um local específico."
+            summary = "Consulta dados salvos no banco de dados",
+            description = "Consulta o banco de dados e retorna o histórico de todos os registros salvos para um local específico."
     )
-    @GetMapping("/consultar/{nomeLocal}")
+    @GetMapping
     ResponseEntity<List<DadosClimaticos>> consultarPorLocal(
-            @Parameter(description = "Nome do local (bairro/cidade, ex: 'Campo Grande')", required = true)
-            @PathVariable String nomeLocal
+            @Parameter(description = "Nome do local (bairro/cidade, ex: 'Trindade')", required = true)
+            @RequestParam String nomeLocal
     );
 }
