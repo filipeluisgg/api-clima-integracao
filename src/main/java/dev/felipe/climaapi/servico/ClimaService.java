@@ -78,4 +78,12 @@ public class ClimaService
 
         return dadosClimaticos;
     }
+
+    /**
+     * Lista todos os registros de dados climáticos que estão salvos no banco de dados.
+     * @return Uma lista com todos os registros.
+     */
+    public List<DadosClimaticos> listarTodos() {
+        return dadosClimaticosRepositorio.findAll();
+    }
 }

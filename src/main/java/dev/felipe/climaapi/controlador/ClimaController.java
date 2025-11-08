@@ -33,4 +33,11 @@ public class ClimaController implements ClimaApiDocs
         List<DadosClimaticos> dados = climaService.consultarClimaPorLocal(nomeLocal);
         return ResponseEntity.ok(dados);
     }
+
+    @Override
+    @GetMapping("/todos")
+    public ResponseEntity<List<DadosClimaticos>> listarTodosOsRegistros() {
+        List<DadosClimaticos> dados = climaService.listarTodos();
+        return ResponseEntity.ok(dados);
+    }
 }
